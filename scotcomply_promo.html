@@ -780,10 +780,17 @@
 
     <script>
         async function downloadAd(button, elementClass, width, height) {
-            // Find the ad element
-            const adElement = button.previousElementSibling.querySelector('.' + elementClass);
+            // Find the ad element - it's the previous sibling of the button
+            let adElement = button.previousElementSibling;
+            
+            // If the previous sibling is not the ad (might be a text node), search for the element with the class
+            if (!adElement || !adElement.classList || !adElement.classList.contains(elementClass)) {
+                adElement = button.parentElement.querySelector('.' + elementClass);
+            }
+            
             if (!adElement) {
                 alert('Ad element not found!');
+                console.error('Could not find element with class:', elementClass);
                 return;
             }
 
